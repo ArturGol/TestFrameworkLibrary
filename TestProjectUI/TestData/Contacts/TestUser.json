@@ -1,0 +1,6 @@
+﻿{
+  "firstName": "_z_TestAdmin_firstName_z_",
+  "lastName": "_z_TestAdmin_lastName_z_",
+  "role": "Admin",
+  "categories" : ["Customers", "Suppliers"]
+}
