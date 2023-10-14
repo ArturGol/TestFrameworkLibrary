@@ -96,7 +96,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="PageSteps\ActivityLog.cs" />
+    <Compile Include="Pages\ActivityLog\ActivityLogPage.cs" />
     <Compile Include="PageSteps\ActivityLogStepDefinitions.cs" />
     <Compile Include="Pages\BasePage.cs" />
     <Compile Include="BaseTest.cs" />
@@ -115,6 +115,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Features\ActivityLog.feature" />
     <None Include="Features\Reports.feature" />
     <None Include="Features\Contacts.feature" />

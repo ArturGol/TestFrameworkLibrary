@@ -1,7 +1,5 @@
 using FluentAssertions;
-using System;
 using TechTalk.SpecFlow;
-using TestProjectUI.Pages.Contacts;
 using TestProjectUI.Pages.Reports;
 
 namespace TestProjectUI.PageSteps
@@ -26,13 +24,13 @@ namespace TestProjectUI.PageSteps
         [Then(@"I verify if any results are returned")]
         public void ThenIVerifyIfAnyData()
         {
-            _reportsPage.IsAnyData().Should().BeTrue();
+            _reportsPage.IsAnyData().Should().BeTrue("There are no reports returned.");
         }
 
         [Given(@"I should be on the Reports page")]
         public void GivenIAmOnContactsPage()
         {
-            _reportsPage.IsDisplay.Should().BeTrue();
+            _reportsPage.IsDisplay.Should().BeTrue("Cannot diplay report page.");
         }
     }
 }

@@ -1,11 +1,9 @@
 ﻿using OpenQA.Selenium;
-using System;
 
 namespace TestProjectUI.Pages.Contacts
 {
     public class ContactsPageLeftBar : BasePage
     {
-
         public ContactsPageLeftBar(IWebDriver driver): base(driver) { }
 
         public void ClickMenuButton(string menuButton)

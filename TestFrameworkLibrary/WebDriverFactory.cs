@@ -1,22 +1,20 @@
 ﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.IO;
+using System.Reflection;
 
 namespace TestFrameworkLibrary
 {
     public class WebDriverFactory
     {
-        public IWebDriver Create(string browserType)
+        public IWebDriver Create(BrowserType browserType)
         {
             switch (browserType)
             {
-                case "Chrome":
-
-                    var driver = new ChromeDriver();
+                case BrowserType.Chrome:
+                    var outPutDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                    var driver = new ChromeDriver(outPutDirectory);
                     driver.Manage().Window.Maximize();
                     return driver;
                 default:
@@ -25,4 +23,3 @@ namespace TestFrameworkLibrary
         }
     }
 }
-

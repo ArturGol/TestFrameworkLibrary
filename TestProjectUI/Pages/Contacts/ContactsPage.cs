@@ -1,6 +1,5 @@
 ﻿using OpenQA.Selenium;
-using OpenQA.Selenium.Support.UI;
-using System;
+using TestFrameworkLibrary.Helpers;
 
 namespace TestProjectUI.Pages.Contacts
 {
@@ -16,22 +15,7 @@ namespace TestProjectUI.Pages.Contacts
         {
             get
             {
-                WebDriverWait wait = new WebDriverWait(Driver, TimeSpan.FromSeconds(5));
-
-                IWebElement element = wait.Until(_driver =>
-                {
-                    try
-                    {
-                       IWebElement elementFound =  _driver.FindElement(By.XPath("//*[@id='main-title-module']//span[text()='Contacts']"));
-
-                       return elementFound;
-                    }
-                    catch (NoSuchElementException)
-                    {
-                        return null;
-                    }
-
-                });
+                IWebElement element = WebDriverWaitHelper.WaitFor(Driver, By.XPath("//*[@id='main-title-module']//span[text()='Contacts']"));
 
                 return element != null ? element.Displayed && Driver.Url.Contains("Contacts") : false;
             }

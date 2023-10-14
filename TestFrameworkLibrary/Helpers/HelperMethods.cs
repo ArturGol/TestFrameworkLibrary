@@ -1,55 +1,27 @@
 ﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 using System;
-using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
+using TestFrameworkLibrary.Enums;
 
 namespace TestFrameworkLibrary.Helpers
 {
     public static class HelperMethods
     {
-        public static IWebElement CustomAction(By selector, CustomActions action, IWebDriver driver, double time)
+        public static IWebElement CustomAction(By selector, CustomActions action, IWebDriver driver, double seconds = 5)
         {
-            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(time));
+            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(seconds));
+            IWebElement element = wait.Until(d => d.FindElement(selector));
 
-            IWebElement elementFound = wait.Until(_driver =>
-            {
-                var element = driver.FindElement(selector);
+            IJavaScriptExecutor executor = (IJavaScriptExecutor)driver;
+            executor.ExecuteScript(GetAction(action), element);
 
-                IJavaScriptExecutor executor = (IJavaScriptExecutor)_driver;
-                executor.ExecuteScript(GetAction(action), element);
-
-                return element;
-            });
-
-            return null;
+            return element;
         }
 
-        public static T WaitForElement<T>(this WebDriverWait wait, IWebDriver driver, By locator, Func<IWebElement, T> condition)
-        {
-            return wait.Until(d =>
-            {
-                IWebElement element = driver.FindElement(locator);
-
-                if (element.Displayed)
-                {
-                    return condition(element);
-                }
-
-                return default(T);
-            });
-        }
-
-        public enum CustomActions
-        {
-            Click,
-            ScrollUp
-        }
-
-        public static IWebElement FindElementWithRetry(By elementS, IWebDriver driver,  int maxRetries = 5)
+        public static IWebElement FindElementWithRetry(By selector, IWebDriver driver,  int maxRetries = 5)
         {
             int retryCount = 0;
 
@@ -57,7 +29,7 @@ namespace TestFrameworkLibrary.Helpers
             {
                 try
                 {
-                    var element = driver.FindElement(elementS);
+                    IWebElement element = driver.FindElement(selector);
 
                     if (element.Displayed)
                     {
@@ -66,13 +38,12 @@ namespace TestFrameworkLibrary.Helpers
                 }
                 catch (NoSuchElementException)
                 {
-                    // Element not found
+                    // Element not found 
                 }
                 catch (StaleElementReferenceException)
                 {
                     // Element not stable
                 }
-
 
                 Thread.Sleep(TimeSpan.FromSeconds(1));
                 retryCount++;
@@ -82,7 +53,7 @@ namespace TestFrameworkLibrary.Helpers
             return null;
         }
 
-        public static IReadOnlyCollection<IWebElement> FindElementsWithRetry(By elementS, IWebDriver driver, int maxRetries = 5)
+        public static ReadOnlyCollection<IWebElement> FindElementsWithRetry(By selector, IWebDriver driver, int maxRetries = 5)
         {
             int retryCount = 0;
 
@@ -90,16 +61,16 @@ namespace TestFrameworkLibrary.Helpers
             {
                 try
                 {
-                    var elements = driver.FindElements(elementS);
+                    ReadOnlyCollection<IWebElement> elements = driver.FindElements(selector);
 
                     if (elements.Any())
                     {
-                        return elements.ToList();
+                        return elements;
                     }
                 }
                 catch (NoSuchElementException)
                 {
-                    // Element not found
+                    // Element not found 
                 }
                 catch (StaleElementReferenceException)
                 {
@@ -117,7 +88,6 @@ namespace TestFrameworkLibrary.Helpers
 
         private static string GetAction(CustomActions action)
         {
-
             switch (action)
             {
                 case CustomActions.Click:

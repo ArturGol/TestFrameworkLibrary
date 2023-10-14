@@ -1,7 +1,6 @@
 ﻿using OpenQA.Selenium;
-using OpenQA.Selenium.Support.UI;
-using System;
 using System.Collections.Generic;
+using TestFrameworkLibrary.Helpers;
 using static TestFrameworkLibrary.Helpers.HelperMethods;
 
 namespace TestProjectUI.Pages.Reports
@@ -14,33 +13,17 @@ namespace TestProjectUI.Pages.Reports
         private IWebElement _reports => Driver.FindElement(By.Id("main-title-module"));
         private IReadOnlyCollection<IWebElement> _dataReports => Driver.FindElements(By.XPath("//tr[@data-id]"));
         public CenterSectionReportPage CenterSection => new CenterSectionReportPage(Driver);
+
+        public ReportsPage(IWebDriver driver) : base(driver) { }
+
         public bool IsDisplay
         {
             get
             {
-                WebDriverWait wait = new WebDriverWait(Driver, TimeSpan.FromSeconds(5));
-
-                IWebElement element = wait.Until(_driver =>
-                {
-                    try
-                    {
-                        IWebElement elementFound = _driver.FindElement(By.XPath("//*[@id='main-title-module']//span[text()='Reports']"));
-
-                        return elementFound;
-                    }
-                    catch (NoSuchElementException)
-                    {
-                        return null;
-                    }
-
-                });
+                IWebElement element = WebDriverWaitHelper.WaitFor(Driver, By.XPath("//*[@id='main-title-module']//span[text()='Reports']"));
 
                 return element != null ? element.Displayed && Driver.Url.Contains("Reports") : false;
             }
-        }
-
-        public ReportsPage(IWebDriver driver) : base(driver)
-        {
         }
 
         public void FindReport(string reportName)
@@ -55,8 +38,6 @@ namespace TestProjectUI.Pages.Reports
             FindElementWithRetry(By.XPath("//a[@class='listViewNameLink']"), Driver);
 
             _reportNameClick.Click();
-
-            //CustomAction(By.XPath("//a[@class='listViewNameLink']"), CustomActions.Click, Driver, 5);
         }
 
         public void RunReport()

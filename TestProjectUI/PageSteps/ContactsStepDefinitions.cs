@@ -3,7 +3,6 @@ using TechTalk.SpecFlow;
 using TestFrameworkLibrary;
 using TestFrameworkLibrary.Models;
 using TestProjectUI.Pages.Contacts;
-using TestProjectUI.Pages.Reports;
 
 namespace TestProjectUI.PageSteps
 {
@@ -20,7 +19,7 @@ namespace TestProjectUI.PageSteps
         public void GivenIClickButtonOnLeftBarMenu(string menuButton)
         {
             _contactsPage.LeftBarSection.ClickMenuButton(menuButton);
-            _contactsPage.CenterSection.IsCreateFormDisplay.Should().BeTrue();
+            _contactsPage.CenterSection.IsCreateFormDisplay.Should().BeTrue("Create form is not displayed.");
         }
 
         [Then(@"I verify that the contact data matches the file '([^']*)'")]
@@ -29,7 +28,7 @@ namespace TestProjectUI.PageSteps
             string file = DataHandler.GetFilePath(fileName);
             ContactsUser userFile = DataHandler.ParseJson<ContactsUser>(file);
             ContactsUser userWeb = _contactsPage.CenterSection.ReadDataAfterSave();
-            userFile.Should().BeEquivalentTo(userWeb);
+            userFile.Should().BeEquivalentTo(userWeb, "Data from contact form does do not match.");
         }
 
         [When(@"I create contact from the file '([^']*)'")]
@@ -38,13 +37,13 @@ namespace TestProjectUI.PageSteps
             string file = DataHandler.GetFilePath(fileName);
             ContactsUser user = DataHandler.ParseJson<ContactsUser>(file);
             bool result = _contactsPage.CenterSection.FillForm(user);
-            result.Should().BeTrue();
+            result.Should().BeTrue("Could not save data in contact form.");
         }
 
         [Given(@"I should be on the Contacts page")]
         public void GivenIAmOnContactsPage()
         {
-            _contactsPage.IsDisplay.Should().BeTrue();
+            _contactsPage.IsDisplay.Should().BeTrue("Cannot display contact page.");
         }
     }
 }

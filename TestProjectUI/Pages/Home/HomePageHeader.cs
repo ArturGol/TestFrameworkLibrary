@@ -7,24 +7,17 @@ namespace TestProjectUI.Pages.Home
     public class HomePageHeader : BasePage
     {
         public HomePageHeader(IWebDriver driver) : base(driver) { }
-        private IWebElement _salesMarketingButton => Driver.FindElement(By.Id("grouptab-1"));
-        private IWebElement _reportsSettingsButton => Driver.FindElement(By.Id("grouptab-5"));
-        private IWebElement _contactButton => Driver.FindElement(By.XPath("//a[@href='index.php?module=Contacts&action=index']"));
-        private IWebElement _reportButton => Driver.FindElement(By.XPath("//a[@href='index.php?module=Reports&action=index']"));
+        private By _salesMarketingButton => By.Id("grouptab-1");
+        private By _reportsSettingsButton => By.Id("grouptab-5");
 
         public void HoverOverHeaderMenu(string menuButton)
         {
-            FindElementWithRetry(GetHoverHeaderSelector(menuButton), Driver);
-
-            Driver.FindElement(GetHoverHeaderSelector(menuButton)).Click();
+            FindElementWithRetry(GetHoverHeaderSelector(menuButton), Driver).Click();
         }
 
         public void ClickHeaderMenuButton(string menuButton)
         {
-            FindElementWithRetry(GetHeaderMenuButton(menuButton), Driver);
-
-            Driver.FindElement(GetHeaderMenuButton(menuButton)).Click();
-
+            FindElementWithRetry(GetHeaderMenuButton(menuButton), Driver).Click();
         }
 
         private By GetHoverHeaderSelector(string headerMenuNuttonName)
@@ -32,10 +25,10 @@ namespace TestProjectUI.Pages.Home
             switch (headerMenuNuttonName)
             {
                 case "Sales & Marketing":
-                    return By.Id("grouptab-1");
+                    return _salesMarketingButton;
 
                 case "Reports & Settings":
-                    return By.Id("grouptab-5");
+                    return _reportsSettingsButton;
 
                 default:
                     throw new ArgumentOutOfRangeException();
