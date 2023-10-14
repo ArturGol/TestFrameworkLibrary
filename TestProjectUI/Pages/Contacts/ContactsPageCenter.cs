@@ -80,7 +80,8 @@ namespace TestProjectUI.Pages.Contacts
             IWebElement pElement = Driver.FindElement(By.CssSelector("ul.summary-list p.form-label"));
             IJavaScriptExecutor jsExecutor = (IJavaScriptExecutor)Driver;
             string text = (string)jsExecutor.ExecuteScript("return arguments[0].lastChild.textContent;", pElement);
-            string names = _category.Text.Replace(text, String.Empty);
+            IWebElement categorieElement =  WebDriverWaitHelper.WaitFor(Driver, By.XPath("//ul[@class='summary-list']//li[1]"));
+            string names = categorieElement.Text.Replace(text, String.Empty);
             string[] categories = names.Trim().Replace(",", "").Split(' ');
             string role = _role.Text.Trim();
 
