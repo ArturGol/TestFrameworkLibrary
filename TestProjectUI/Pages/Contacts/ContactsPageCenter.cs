@@ -49,14 +49,12 @@ namespace TestProjectUI.Pages.Contacts
 
             contactsUser.categories.ForEach(x =>
             {
-                IWebElement categoryMenu = FindElementWithRetry(By.Id("DetailFormcategories-input"), Driver);
-                IJavaScriptExecutor executor = (IJavaScriptExecutor)Driver;
-                executor.ExecuteScript("arguments[0].click();", categoryMenu);
+                FindElementWithRetry(By.Id("DetailFormcategories-input"), Driver).Click();
                 Thread.Sleep(1000);
                 var actions = new Actions(Driver);
                 actions.MoveToElement(Driver.FindElement(By.XPath($"//*[@id='DetailFormcategories-input-search-list']//div[text()='{x}']"))).Build().Perform();
                 Thread.Sleep(1000);
-                executor.ExecuteScript("arguments[0].click();", Driver.FindElement(By.XPath($"//*[@id='DetailFormcategories-input-search-list']//div[text()='{x}']")));
+                Driver.FindElement(By.XPath($"//*[@id='DetailFormcategories-input-search-list']//div[text()='{x}']")).Click();
                 Thread.Sleep(1000);
             });
 
@@ -72,6 +70,7 @@ namespace TestProjectUI.Pages.Contacts
 
         public ContactsUser ReadDataAfterSave()
         {
+            Thread.Sleep(2000);
             FindElementWithRetry(By.XPath("//span[@class='detailLink']/a"), Driver).Click();
             IWebElement nameElement = WebDriverWaitHelper.WaitFor(Driver, By.XPath("//div[@id='_form_header']"));
             string[] name = nameElement.Text.Trim().Split(' ');
